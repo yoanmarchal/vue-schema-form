@@ -1,8 +1,10 @@
 <template>
   <div class="container">
-    <p>test</p>
-    <textInput :field="field" :value="data[field.name]" v-on:input="onUpdate" class="form-group" :class="`${field.size ? field.size : 'col-12'}`" />
-    <Form :schema="UserRegisterSchema" :data="UserRegisterData" />
+    <div class="form-row">
+      <textInput :field="field" :data="data[field.name]" v-on:input="onUpdate" class="form-group" :class="`${field.size ? field.size : 'col-12'}`" />
+    </div>
+    
+    <Form :schema="UserRegisterSchema" :data="UserRegisterData" v-on:change="onUpdateForm" />
   </div>
 
 </template>
@@ -157,7 +159,10 @@ export default {
     onUpdate($event) {
       console.log($event);
       this.data.civ2 = $event
-    }
+    },
+    onUpdateForm($event) {
+      console.log($event);
+    },
   }
 }
 </script>

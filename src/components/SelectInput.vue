@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="col">
     <label>
       {{ field.label }}
       <span v-if="field.required">*</span>
     </label>
-    <select class="custom-select" v-model="data.value">
+    <select class="custom-select" v-model="data.value" v-on:input="$emit('input', {model: field.name, value: $event.target.value})">
       <option value="default" disabled hidden>Choose...</option>
       <option v-for="option in field.options" :value="option.value" :key="option.value">
         {{ option.text }}

@@ -1,11 +1,11 @@
 <template>
-    <div>
-      <label>
-        {{ field.label }}
-        <span v-if="field.required">*</span>
-      </label>
-      <input class="input form-control" type="text" :placeholder="field.placeholder" v-model="data.value">
-    </div>
+  <div class="col">
+    <label>
+      {{ field.label }}
+      <span v-if="field.required">*</span>
+    </label>
+    <input class="input form-control" type="text" :placeholder="field.placeholder" v-model="data.value" v-on:input="$emit('input', {model: field.name, value: $event.target.value})">
+  </div>
 </template>
 
 <script>

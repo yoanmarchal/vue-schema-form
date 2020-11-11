@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col">
     <b-form-checkbox v-model="data.value" switch class="right ">
       {{ field.label }}
     </b-form-checkbox>

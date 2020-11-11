@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="col">
       <label>
         {{ field.label }}
         <span v-if="field.required">*</span>
