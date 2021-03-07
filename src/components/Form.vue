@@ -2,7 +2,7 @@
   <template v-for="(row, index) in schema.rows" :key="index">
     <div class="form-row">
       <template v-for="field in row.fields" :key="field.name">
-        <component :is="field.type" :field="field" :data="data[field.name]" v-on:input="onUpdate" :class="`${field.size ? field.size : 'col-12'}`"></component>
+        <component :is="field.type" :field="field" :data="data[field.name]" @input="onUpdate" :class="`${field.size ? field.size : 'col-12'}`"></component>
       </template>
     </div>
   </template> 
@@ -22,6 +22,7 @@ export default {
       formdata: {}
     }
   },
+  emits: ["updatedForm"],
   components: {
     textInput,
     emailInput,
@@ -37,6 +38,7 @@ export default {
   methods: {
     onUpdate($event) {
       this.formdata[$event.model] = $event.value
+      this.$emit('updatedForm', this.formdata)
     }
   }
 }

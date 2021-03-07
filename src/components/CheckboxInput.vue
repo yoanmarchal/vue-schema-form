@@ -1,8 +1,12 @@
 <template>
   <div class="col">
-    <b-form-checkbox v-model="data.value" switch class="right ">
-      {{ field.label }}
-    </b-form-checkbox>
+    <div class="custom-control custom-switch ml-2">
+      <input type="checkbox" class="custom-control-input" :id="field.label"  v-model="data.value" autocomplete="off">
+      <label class="custom-control-label" :for='field.label'>
+        {{ field.label }}
+        <span v-if="field.required">*</span>
+      </label>
+    </div>
   </div>
 </template>
 

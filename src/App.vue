@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="form-row">
-      <textInput :field="field" :data="data[field.name]" v-on:input="onUpdate" class="form-group" :class="`${field.size ? field.size : 'col-12'}`" />
-    </div>
-    
-    <Form :schema="UserRegisterSchema" :data="UserRegisterData" v-on:change="onUpdateForm" />
+    <Form :schema="UserRegisterSchema" :data="UserRegisterData" @updatedForm="onUpdateForm" />
+
+    <pre>
+      {{formdata}}
+    </pre>
   </div>
 
 </template>
@@ -140,15 +140,7 @@ export default {
     return {
       UserRegisterSchema,
       UserRegisterData,
-      field: {
-        type: 'text-input',
-        name: 'lastname',
-        label: 'Nom',
-        size: "col-sm-2"
-      },
-      data: {
-        lastname:  'test direct'
-      }
+      formdata: null
     }
   },
   components: {
@@ -156,12 +148,9 @@ export default {
     textInput
   },
   methods: {
-    onUpdate($event) {
-      console.log($event);
-      this.data.civ2 = $event
-    },
     onUpdateForm($event) {
       console.log($event);
+      this.formdata = $event
     },
   }
 }
