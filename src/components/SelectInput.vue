@@ -4,7 +4,7 @@
       {{ field.label }}
       <span v-if="field.required">*</span>
     </label>
-    <select class="custom-select" v-model="data.value" v-on:input="$emit('input', {model: field.name, value: $event.target.value})">
+    <select class="custom-select" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
       <option value="default" disabled hidden>Choose...</option>
       <option v-for="option in field.options" :value="option.value" :key="option.value">
         {{ option.text }}
@@ -18,7 +18,7 @@ export default {
   inheritAttrs: false,
   props: {
     field: { required: true },
-    data: { required: true }
+    modelValue: [String, Number]
   }
 }
 </script>

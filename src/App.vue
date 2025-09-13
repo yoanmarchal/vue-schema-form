@@ -3,7 +3,7 @@
     <Form :schema="UserRegisterSchema" :data="UserRegisterData" @updatedForm="onUpdateForm" />
 
     <pre>
-      {{formdata}}
+      {{ formdata }}
     </pre>
   </div>
 
@@ -98,41 +98,27 @@ const UserRegisterSchema = {
     },
   ],
 };
-const UserRegisterData = {
-  civ: {
-    value: ''
-  },
-  firstname:  {
-    value: 'Yo'
-  },
-  lastname: {
-    value: 'Yo'
-  },
-  bd: {
-    value: ''
-  },
-  mail: {
-    value: ''
-  },
-  address: {
-    value: ''
-  },
-  cp: {
-    value: ''
-  },
-  city: {
-    value: ''
-  },
-  phone: {
-    value: ''
-  },
-  nl: {
-    value: ''
-  },
-  consent: {
-    value: ''
-  },
-};
+
+function generateFormData(schema) {
+  const data = {};
+  schema.rows.forEach(row => {
+    row.fields.forEach(field => {
+      switch (field.type) {
+        case 'checkbox-input':
+          data[field.name] = false;
+          break;
+        case 'number-input':
+          data[field.name] = '';
+          break;
+        default:
+          data[field.name] = '';
+      }
+    });
+  });
+  return data;
+}
+
+const UserRegisterData = generateFormData(UserRegisterSchema);
 
 export default {
   name: 'App',

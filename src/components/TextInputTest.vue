@@ -4,7 +4,8 @@
       {{ field.label }}
       <span v-if="field.required">*</span>
     </label>
-    <input class="input form-control" type="text" :placeholder="field.placeholder" v-model="data" v-on:input="$emit('input', $event.target.data)" >
+    <input class="input form-control" type="text" :placeholder="field.placeholder" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)">
   </div>
 </template>
 
@@ -14,7 +15,7 @@ export default {
   inheritAttrs: false,
   props: {
     field: { required: true },
-    data: { required: true }
+    modelValue: { required: true }
   }
 }
 </script>

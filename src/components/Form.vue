@@ -2,10 +2,12 @@
   <template v-for="(row, index) in schema.rows" :key="index">
     <div class="form-row">
       <template v-for="field in row.fields" :key="field.name">
-        <component :is="field.type" :field="field" :data="data[field.name]" @input="onUpdate" :class="`${field.size ? field.size : 'col-12'}`"></component>
+        <component :is="field.type" :field="field" v-model="data[field.name]"
+          :class="`${field.size ? field.size : 'col-12'}`" @update:modelValue="onUpdate(field.name, $event)">
+        </component>
       </template>
     </div>
-  </template> 
+  </template>
 </template>
 
 <script>
@@ -17,11 +19,6 @@ import checkboxInput from './CheckboxInput.vue'
 import selectInput from './SelectInput.vue'
 
 export default {
-  data() {
-    return {
-      formdata: {}
-    }
-  },
   emits: ["updatedForm"],
   components: {
     textInput,
@@ -29,16 +26,16 @@ export default {
     numberInput,
     dateInput,
     checkboxInput,
-    selectInput,
+    selectInput
   },
   props: {
     schema: { required: true },
     data: { required: true }
   },
   methods: {
-    onUpdate($event) {
-      this.formdata[$event.model] = $event.value
-      this.$emit('updatedForm', this.formdata)
+    onUpdate(fieldName, value) {
+      this.data[fieldName] = value;
+      this.$emit('updatedForm', { ...this.data });
     }
   }
 }
