@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { h } from 'vue'
 import TextInput from '../TextInput.vue'
 import EmailInput from '../EmailInput.vue'
 import NumberInput from '../NumberInput.vue'
@@ -46,8 +47,7 @@ describe.each(textLike)('$name', ({ component, type, value }) => {
     expect(wrapper.find('label span').exists()).toBe(false)
   })
 
-  // DEBT: <label> is not bound to its <input> (no id / for)
-  it.fails('associates the label with the input', () => {
+  it('associates the label with the input', () => {
     const wrapper = mount(component, { props: { field, modelValue: '' }, attachTo: document.body })
     const id = wrapper.find('input').attributes('id')
     expect(id).toBeTruthy()
@@ -55,22 +55,19 @@ describe.each(textLike)('$name', ({ component, type, value }) => {
     wrapper.unmount()
   })
 
-  // DEBT: field.required is only cosmetic
-  it.fails('sets the native required attribute', () => {
+  it('sets the native required attribute', () => {
     const wrapper = mount(component, { props: { field: { ...field, required: true }, modelValue: '' } })
     expect(wrapper.find('input').attributes('required')).toBeDefined()
   })
 
-  // DEBT: inheritAttrs: false drops the size class passed by Form
-  it.fails('applies class passed from the parent', () => {
+  it('applies class passed from the parent', () => {
     const wrapper = mount(component, { props: { field, modelValue: '' }, attrs: { class: 'col-sm-4' } })
     expect(wrapper.classes()).toContain('col-sm-4')
   })
 })
 
 describe('NumberInput', () => {
-  // DEBT: rendered as type="text", no numeric keyboard
-  it.fails('uses a numeric input mode', () => {
+  it('uses a numeric input mode', () => {
     const wrapper = mount(NumberInput, { props: { field: { name: 'cp', label: 'CP' }, modelValue: '' } })
     expect(wrapper.find('input').attributes('inputmode')).toBe('numeric')
   })
@@ -95,13 +92,14 @@ describe('CheckboxInput', () => {
     expect(wrapper.find('label').attributes('for')).toBe(wrapper.find('input').attributes('id'))
   })
 
-  // DEBT: id is derived from the label (spaces, accents, collisions)
-  it.fails('produces a valid, unique id even with spaces in the label', () => {
-    const a = mount(CheckboxInput, { props: { field: { name: 'a', label: 'Mon label' }, modelValue: false } })
-    const b = mount(CheckboxInput, { props: { field: { name: 'b', label: 'Mon label' }, modelValue: false } })
-    const idA = a.find('input').attributes('id')
+  it('produces a valid, unique id even with spaces in the label', () => {
+    const wrapper = mount(() => [
+      h(CheckboxInput, { field: { name: 'a', label: 'Mon label' } }),
+      h(CheckboxInput, { field: { name: 'b', label: 'Mon label' } })
+    ])
+    const [idA, idB] = wrapper.findAll('input').map(i => i.attributes('id'))
     expect(idA).not.toMatch(/\s/)
-    expect(idA).not.toBe(b.find('input').attributes('id'))
+    expect(idA).not.toBe(idB)
   })
 })
 
@@ -132,8 +130,7 @@ describe('SelectInput', () => {
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['Madame'])
   })
 
-  // DEBT: placeholder option has value "default" so an empty model selects nothing
-  it.fails('shows the placeholder when the model is empty', () => {
+  it('shows the placeholder when the model is empty', () => {
     const wrapper = mount(SelectInput, { props: { field, modelValue: '' }, attachTo: document.body })
     expect(wrapper.find('select').element.selectedIndex).toBe(0)
     wrapper.unmount()

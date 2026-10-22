@@ -54,8 +54,7 @@ describe('Form', () => {
     expect(wrapper.emitted('updatedForm').at(-1)[0]).not.toBe(data)
   })
 
-  // DEBT: the component mutates its `data` prop in place
-  it.fails('does not mutate the data prop', async () => {
+  it('does not mutate the data prop', async () => {
     const data = blank()
     const wrapper = mount(Form, { props: { schema, data } })
     await wrapper.find('input[type=email]').setValue('x@y.z')
@@ -68,18 +67,34 @@ describe('Form', () => {
     expect(wrapper.emitted('updatedForm')).toHaveLength(1)
   })
 
-  // DEBT: field.size never reaches the DOM because inputs use inheritAttrs: false
-  it.fails('applies field.size, defaulting to col-12', () => {
+  it('applies field.size, defaulting to col-12', () => {
     const wrapper = mount(Form, { props: { schema, data: blank() } })
     const cols = wrapper.findAll('.form-row > div')
     expect(cols[0].classes()).toContain('col-sm-6')
     expect(cols[1].classes()).toContain('col-12')
   })
 
-  // DEBT: no <form> element, no submit event
-  it.fails('renders a <form> and emits submit', async () => {
+  it('renders a <form> and emits submit', async () => {
     const wrapper = mount(Form, { props: { schema, data: blank() } })
     await wrapper.find('form').trigger('submit')
     expect(wrapper.emitted('submit')).toBeTruthy()
+  })
+
+  it('emits submit with current values', async () => {
+    const wrapper = mount(Form, { props: { schema, data: blank() } })
+    await wrapper.find('input[type=email]').setValue('a@b.fr')
+    await wrapper.find('form').trigger('submit')
+    expect(wrapper.emitted('submit')[0][0]).toEqual({ ...blank(), mail: 'a@b.fr' })
+  })
+
+  it('syncs when the data prop changes', async () => {
+    const wrapper = mount(Form, { props: { schema, data: blank() } })
+    await wrapper.setProps({ data: { ...blank(), mail: 'new@b.fr' } })
+    expect(wrapper.find('input[type=email]').element.value).toBe('new@b.fr')
+  })
+
+  it('renders the default slot inside the form', () => {
+    const wrapper = mount(Form, { props: { schema, data: blank() }, slots: { default: '<button>OK</button>' } })
+    expect(wrapper.find('form button').text()).toBe('OK')
   })
 })

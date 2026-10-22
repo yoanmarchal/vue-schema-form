@@ -11,7 +11,6 @@
 
 <script>
 import Form from './components/Form.vue'
-import textInput from './components/TextInputTest.vue'
 
 const UserRegisterSchema = {
   rows: [
@@ -130,12 +129,10 @@ export default {
     }
   },
   components: {
-    Form,
-    textInput
+    Form
   },
   methods: {
     onUpdateForm($event) {
-      console.log($event);
       this.formdata = $event
     },
   }

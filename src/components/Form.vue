@@ -1,42 +1,43 @@
 <template>
-  <template v-for="(row, index) in schema.rows" :key="index">
-    <div class="form-row">
-      <template v-for="field in row.fields" :key="field.name">
-        <component :is="field.type" :field="field" v-model="data[field.name]"
-          :class="`${field.size ? field.size : 'col-12'}`" @update:modelValue="onUpdate(field.name, $event)">
-        </component>
-      </template>
+  <form novalidate @submit.prevent="emit('submit', { ...values })">
+    <div v-for="(row, index) in schema.rows" :key="index" class="form-row">
+      <component :is="components[field.type]" v-for="field in row.fields" :key="field.name" :field="field"
+        :model-value="values[field.name]" :class="field.size ?? 'col-12'"
+        @update:model-value="onUpdate(field.name, $event)" />
     </div>
-  </template>
+    <slot />
+  </form>
 </template>
 
-<script>
-import textInput from './TextInput.vue'
-import emailInput from './EmailInput.vue'
-import numberInput from './NumberInput.vue'
-import dateInput from './DateInput.vue'
-import checkboxInput from './CheckboxInput.vue'
-import selectInput from './SelectInput.vue'
+<script setup>
+import { reactive, watch } from 'vue'
+import TextInput from './TextInput.vue'
+import EmailInput from './EmailInput.vue'
+import NumberInput from './NumberInput.vue'
+import DateInput from './DateInput.vue'
+import CheckboxInput from './CheckboxInput.vue'
+import SelectInput from './SelectInput.vue'
 
-export default {
-  emits: ["updatedForm"],
-  components: {
-    textInput,
-    emailInput,
-    numberInput,
-    dateInput,
-    checkboxInput,
-    selectInput
-  },
-  props: {
-    schema: { required: true },
-    data: { required: true }
-  },
-  methods: {
-    onUpdate(fieldName, value) {
-      this.data[fieldName] = value;
-      this.$emit('updatedForm', { ...this.data });
-    }
-  }
+const components = {
+  'text-input': TextInput,
+  'email-input': EmailInput,
+  'number-input': NumberInput,
+  'date-input': DateInput,
+  'checkbox-input': CheckboxInput,
+  'select-input': SelectInput
+}
+
+const props = defineProps({
+  schema: { type: Object, required: true },
+  data: { type: Object, required: true }
+})
+const emit = defineEmits(['updatedForm', 'submit'])
+
+const values = reactive({ ...props.data })
+watch(() => props.data, data => Object.assign(values, data), { deep: true })
+
+function onUpdate(fieldName, value) {
+  values[fieldName] = value
+  emit('updatedForm', { ...values })
 }
 </script>
