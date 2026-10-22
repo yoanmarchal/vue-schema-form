@@ -18,6 +18,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   dependency-review:
+    # Dependency review on private repositories requires GitHub Advanced Security
+    if: github.event.repository.private == false
     runs-on: ubuntu-latest
     permissions:
       contents: read
