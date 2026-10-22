@@ -1,5 +1,5 @@
-import type { InferFormValues, ValidationMessages } from 'vite-form'
-import { defineSchema } from 'vite-form'
+import type { InferFormValues, ValidationMessages } from '@yoanmarchal/vue-schema-form'
+import { defineSchema } from '@yoanmarchal/vue-schema-form'
 
 export const userRegisterSchema = defineSchema({
   rows: [

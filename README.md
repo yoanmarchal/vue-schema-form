@@ -1,11 +1,13 @@
-# vite-form
+# vue-schema-form
 
 Schema-driven, fully typed forms for Vue 3. Describe your fields once and get rendering, validation, dirty tracking and accessible markup, with value types inferred from the schema.
 
+[Live playground](https://yoanmarchal.github.io/vue-schema-form/)
+
 ```vue
 <script setup lang="ts">
-import type { InferFormValues } from 'vite-form'
-import { defineSchema, SchemaForm } from 'vite-form'
+import type { InferFormValues } from '@yoanmarchal/vue-schema-form'
+import { defineSchema, SchemaForm } from '@yoanmarchal/vue-schema-form'
 
 const schema = defineSchema({
   rows: [{

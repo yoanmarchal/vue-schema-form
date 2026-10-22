@@ -1,12 +1,12 @@
 {
-  "name": "vite-form",
+  "name": "@yoanmarchal/vue-schema-form",
   "type": "module",
   "version": "0.1.0",
   "private": true,
   "description": "Schema-driven, fully typed forms for Vue 3",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yoanmarchal/vite-form.git"
+    "url": "git+https://github.com/yoanmarchal/vue-schema-form.git"
   },
   "sideEffects": false,
   "exports": {

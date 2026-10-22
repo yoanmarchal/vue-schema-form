@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { UserRegister } from './schema'
-import { SchemaForm } from 'vite-form'
+import { SchemaForm } from '@yoanmarchal/vue-schema-form'
 import { ref } from 'vue'
 import { messagesFr, userRegisterSchema } from './schema'
 

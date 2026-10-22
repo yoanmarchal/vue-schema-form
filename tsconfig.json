@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "paths": {
-      "vite-form": ["./src/index.ts"]
+      "@yoanmarchal/vue-schema-form": ["./src/index.ts"]
     },
     "types": ["node"],
     "noUnusedLocals": true,

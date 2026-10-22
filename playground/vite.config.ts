@@ -4,9 +4,11 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [vue()],
+  // Relative URLs so the build works under any GitHub Pages path
+  base: './',
   resolve: {
     alias: {
-      'vite-form': fileURLToPath(new URL('../src/index.ts', import.meta.url)),
+      '@yoanmarchal/vue-schema-form': fileURLToPath(new URL('../src/index.ts', import.meta.url)),
     },
   },
   build: {

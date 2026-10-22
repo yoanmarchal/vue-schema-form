@@ -22,7 +22,7 @@ export const defaultFieldComponents: Record<FieldType, Component> = {
   select: SelectField,
 }
 
-export const FieldRegistryKey: InjectionKey<FieldComponents> = Symbol('vite-form:fields')
+export const FieldRegistryKey: InjectionKey<FieldComponents> = Symbol('vue-schema-form:fields')
 
 export interface SchemaFormPluginOptions {
   /** Replace built-in field components or register new field types app-wide. */

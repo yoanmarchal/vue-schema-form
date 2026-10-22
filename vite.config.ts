@@ -22,7 +22,7 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     alias: {
-      'vite-form': r('src/index.ts'),
+      '@yoanmarchal/vue-schema-form': r('src/index.ts'),
     },
     include: ['{src,playground}/**/*.test.ts'],
     coverage: {
