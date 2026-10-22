@@ -13,16 +13,17 @@ const { id, errorId, attrs } = useFieldControl(props)
 
 <template>
   <div>
-    <div class="custom-control custom-switch ml-2">
+    <div class="form-check form-switch">
       <input
         v-model="model"
         v-bind="attrs"
         type="checkbox"
-        class="custom-control-input"
+        class="form-check-input"
+        role="switch"
         :class="{ 'is-invalid': error }"
         @blur="emit('blur')"
       >
-      <label class="custom-control-label" :for="id">
+      <label class="form-check-label" :for="id">
         {{ field.label }}
         <span v-if="field.required" aria-hidden="true">*</span>
       </label>

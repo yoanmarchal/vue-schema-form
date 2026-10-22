@@ -11,7 +11,7 @@ defineProps<{
 
 <template>
   <div>
-    <label :for="id">
+    <label class="form-label" :for="id">
       {{ field.label }}
       <span v-if="field.required" aria-hidden="true">*</span>
     </label>

@@ -17,7 +17,7 @@ const { id, errorId, attrs } = useFieldControl(props)
     <select
       v-model="model"
       v-bind="attrs"
-      class="custom-select"
+      class="form-select"
       :class="{ 'is-invalid': error }"
       @blur="emit('blur')"
     >

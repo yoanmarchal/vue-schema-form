@@ -59,7 +59,7 @@ defineExpose(form)
 
 <template>
   <form novalidate @submit="onSubmit" @reset.prevent="form.reset()">
-    <div v-for="(row, index) in schema.rows" :key="index" class="form-row">
+    <div v-for="(row, index) in schema.rows" :key="index" class="row g-3 mb-3">
       <template v-for="field in row.fields" :key="field.name">
         <slot :name="`field:${field.name}`" :field="field" :form="form">
           <SchemaFormField

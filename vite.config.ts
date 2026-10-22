@@ -1,8 +1,8 @@
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
-const r = path => fileURLToPath(new URL(path, import.meta.url))
+const r = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
 // Library build. The demo app has its own config in playground/.
 export default defineConfig({

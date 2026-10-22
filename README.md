@@ -30,7 +30,7 @@ function save(values: InferFormValues<typeof schema>) { /* ... */ }
 </template>
 ```
 
-Markup uses Bootstrap 4 classes (`form-row`, `form-control`, `custom-select`, …). Bring your own stylesheet, or swap the field components (see [Custom fields](#custom-fields)).
+Markup uses Bootstrap 5 classes (`row`, `form-label`, `form-control`, `form-select`, `form-switch`, …). Bring your own stylesheet, or swap the field components (see [Custom fields](#custom-fields)).
 
 ## Development
 

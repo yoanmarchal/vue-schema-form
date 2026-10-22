@@ -35,7 +35,7 @@ describe('SchemaForm', () => {
   it('renders a form with one row per schema row', () => {
     const wrapper = render()
     expect(wrapper.element.tagName).toBe('FORM')
-    expect(wrapper.findAll('.form-row')).toHaveLength(2)
+    expect(wrapper.findAll('.row')).toHaveLength(2)
   })
 
   it('renders every field type', () => {
@@ -46,7 +46,7 @@ describe('SchemaForm', () => {
   })
 
   it('applies field.size, defaulting to col-12', () => {
-    const cols = render().findAll('.form-row > div')
+    const cols = render().findAll('.row > div')
     expect(cols[0]!.classes()).toContain('col-sm-6')
     expect(cols[1]!.classes()).toContain('col-12')
   })
