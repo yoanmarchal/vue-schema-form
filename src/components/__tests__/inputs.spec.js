@@ -1,18 +1,18 @@
-import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
 import { h } from 'vue'
-import TextInput from '../TextInput.vue'
+import CheckboxInput from '../CheckboxInput.vue'
+import DateInput from '../DateInput.vue'
 import EmailInput from '../EmailInput.vue'
 import NumberInput from '../NumberInput.vue'
-import DateInput from '../DateInput.vue'
-import CheckboxInput from '../CheckboxInput.vue'
 import SelectInput from '../SelectInput.vue'
+import TextInput from '../TextInput.vue'
 
 const textLike = [
   { name: 'TextInput', component: TextInput, type: 'text', value: 'Marchal' },
   { name: 'EmailInput', component: EmailInput, type: 'email', value: 'a@b.fr' },
   { name: 'NumberInput', component: NumberInput, type: 'text', value: '75001' },
-  { name: 'DateInput', component: DateInput, type: 'date', value: '2020-01-31' }
+  { name: 'DateInput', component: DateInput, type: 'date', value: '2020-01-31' },
 ]
 
 describe.each(textLike)('$name', ({ component, type, value }) => {
@@ -95,7 +95,7 @@ describe('CheckboxInput', () => {
   it('produces a valid, unique id even with spaces in the label', () => {
     const wrapper = mount(() => [
       h(CheckboxInput, { field: { name: 'a', label: 'Mon label' } }),
-      h(CheckboxInput, { field: { name: 'b', label: 'Mon label' } })
+      h(CheckboxInput, { field: { name: 'b', label: 'Mon label' } }),
     ])
     const [idA, idB] = wrapper.findAll('input').map(i => i.attributes('id'))
     expect(idA).not.toMatch(/\s/)
@@ -109,8 +109,8 @@ describe('SelectInput', () => {
     label: 'Civilité',
     options: [
       { text: 'Mme', value: 'Madame' },
-      { text: 'M.', value: 'Monsieur' }
-    ]
+      { text: 'M.', value: 'Monsieur' },
+    ],
   }
 
   it('renders options plus a placeholder', () => {
