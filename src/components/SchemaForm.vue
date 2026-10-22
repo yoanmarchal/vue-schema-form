@@ -1,46 +1,75 @@
-<script setup>
-import { reactive, watch } from 'vue'
-import CheckboxInput from './CheckboxInput.vue'
-import DateInput from './DateInput.vue'
-import EmailInput from './EmailInput.vue'
-import NumberInput from './NumberInput.vue'
-import SelectInput from './SelectInput.vue'
-import TextInput from './TextInput.vue'
+<script setup lang="ts" generic="S extends FormSchema">
+import type { UseFormReturn } from '../composables/useForm'
+import type { FieldComponents } from '../registry'
+import type { FieldSchema, FormErrors, FormSchema, InferFormValues, ValidationMessages } from '../types'
+import { watch } from 'vue'
+import { provideForm } from '../composables/context'
+import { useForm } from '../composables/useForm'
+import { useFieldComponents } from '../registry'
+import { shallowEqual } from '../utils/shallowEqual'
+import SchemaFormField from './SchemaFormField.vue'
 
-const props = defineProps({
-  schema: { type: Object, required: true },
-  data: { type: Object, required: true },
+type Values = InferFormValues<S>
+
+const props = defineProps<{
+  schema: S
+  /** Per-instance field components, merged over the app registry. */
+  fields?: FieldComponents
+  messages?: Partial<ValidationMessages>
+}>()
+
+const emit = defineEmits<{
+  submit: [values: Values]
+  invalid: [errors: FormErrors<Values>]
+}>()
+
+defineSlots<{
+  default?: (props: { form: UseFormReturn<Values> }) => any
+  [name: `field:${string}`]: (props: { field: FieldSchema, form: UseFormReturn<Values> }) => any
+}>()
+
+const model = defineModel<Partial<Values>>()
+
+const form = useForm(() => props.schema, {
+  // Snapshot: model follows user input, reset() must return to the mount-time values
+  initialValues: { ...model.value },
+  messages: () => props.messages,
 })
+provideForm(form)
 
-const emit = defineEmits(['updatedForm', 'submit'])
+const components = useFieldComponents(() => props.fields)
 
-const components = {
-  'text-input': TextInput,
-  'email-input': EmailInput,
-  'number-input': NumberInput,
-  'date-input': DateInput,
-  'checkbox-input': CheckboxInput,
-  'select-input': SelectInput,
-}
+watch(model, (next) => {
+  if (next && !shallowEqual(next, form.values.value))
+    Object.assign(form.values.value, next)
+}, { deep: true })
 
-const values = reactive({ ...props.data })
-watch(() => props.data, data => Object.assign(values, data), { deep: true })
+watch(form.values, (next) => {
+  if (!shallowEqual(next, model.value))
+    model.value = { ...next }
+}, { deep: true })
 
-function onUpdate(fieldName, value) {
-  values[fieldName] = value
-  emit('updatedForm', { ...values })
-}
+const onSubmit = form.handleSubmit(
+  values => emit('submit', values),
+  errors => emit('invalid', errors),
+)
+
+defineExpose(form)
 </script>
 
 <template>
-  <form novalidate @submit.prevent="emit('submit', { ...values })">
+  <form novalidate @submit="onSubmit" @reset.prevent="form.reset()">
     <div v-for="(row, index) in schema.rows" :key="index" class="form-row">
-      <component
-        :is="components[field.type]" v-for="field in row.fields" :key="field.name" :field="field"
-        :model-value="values[field.name]" :class="field.size ?? 'col-12'"
-        @update:model-value="onUpdate(field.name, $event)"
-      />
+      <template v-for="field in row.fields" :key="field.name">
+        <slot :name="`field:${field.name}`" :field="field" :form="form">
+          <SchemaFormField
+            :field="field"
+            :component="components[field.type]"
+            :class="field.size ?? 'col-12'"
+          />
+        </slot>
+      </template>
     </div>
-    <slot />
+    <slot :form="form" />
   </form>
 </template>
